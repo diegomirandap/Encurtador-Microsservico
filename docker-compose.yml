@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: encurtador
+    ports:
+      - "5432:5432"
+
+  web-encurtador:
+    build: ./Encurtador
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/encurtador
+    depends_on:
+      - db
+
+  web-redirecionador:
+    build: ./Redirecionador
+    ports:
+      - "5001:5000"
+    environment:
+      DATABASE_URL: postgresql://user:password@db:5432/encurtador
+    depends_on:
+      - db
