@@ -114,10 +114,10 @@ def deleteShortUrl(short_code):
     """
     owner_id = request.args.get('owner_id')
     if not owner_id:
-        return jsonify({"error": "owner_id required"}), 400
+        return jsonify({"error": "owner_id necessário"}), 400
     url = URL.query.filter_by(short_code=short_code, owner_id=owner_id).first()
     if not url:
-        return jsonify({"error": "URL not found or not owned by user"}), 404
+        return jsonify({"error": "URL não encontrada ou de outro usuário"}), 404
     db.session.delete(url)
     db.session.commit()
     return '', 200
@@ -139,10 +139,20 @@ def getAllShortUrl():
         type: integer
         default: 10
         description: Número de itens por página
+      - name: admin
+        in: query
+        type: boolean
+        required: true
+        default: false
+        description: Indica se o usuário tem permissão de admin (true/false)
     responses:
       200:
         description: Lista de URLs
+      403:
+        description: Acesso negado para usuários não administradores
     """
+    if request.args.get('admin', 'false') != 'true':
+        return jsonify({"error": "Accesso negado para usuários não administradores"}), 403
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     urls = URL.query.paginate(page=page, per_page=per_page, error_out=False)
@@ -192,7 +202,7 @@ def getUserUrls(owner_id):
         description: owner_id obrigatório
     """
     if not owner_id:
-        return jsonify({"error": "owner_id required"}), 400
+        return jsonify({"error": "owner_id necessário"}), 400
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     urls = URL.query.filter_by(owner_id=owner_id).paginate(page=page, per_page=per_page, error_out=False)
