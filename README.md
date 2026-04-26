@@ -1,8 +1,6 @@
-# Encurtador de URLs - Projeto INF1319-Nuvem
-
 ## Descrição Geral do Projeto
 
-Este projeto implementa um sistema de encurtamento de URLs usando Flask e PostgreSQL. O sistema é dividido em três partes principais:
+Este projeto implementa um sistema de encurtamento de URLs usando Flask e PostgreSQL. O sistema é dividido em três componentes principais:
 
 ### Componentes do Sistema
 
@@ -12,13 +10,13 @@ Este projeto implementa um sistema de encurtamento de URLs usando Flask e Postgr
 
 3. **Serviço Redirecionador (porta 5001)**: Redireciona usuários das URLs curtas para as originais.
 
-### Endpoints Adicionados
+## Endpoints Adicionados
 
 - `DELETE /api/v1/short-urls/{short_code}`: Deletar URL
 - `GET /api/v1/admin/urls`: Listar todas as URLs (Como não foi implementado controle de acesso, estamos partindo do pressuposto que há um controle de usuários que possuem permissão de admin)
 - `GET /api/v1/user/urls`: Listar URLs do usuário
 
-## Melhoras Arquiteturais
+## Melhoras Arquiteturais Futuras
 
 ### 1. Desempenho
 
